@@ -4,21 +4,6 @@ import userEvent from "@testing-library/user-event";
 import type { Solver } from "@/lib/types";
 import SolverDetailPage from "./page";
 
-const useSolverMock = vi.hoisted(() => vi.fn());
-const solverData: Solver = {
-  name: "AlphaMax",
-  address: "GBRPYHIL2CI3WHZDTOOQFC6EB4CGQOFN4QO5JTJVSXBLEDSOMETHING",
-  bondUsd: 500,
-  fills: 42,
-  failed: 1,
-  volumeUsd: 125000,
-  avgFillTimeSeconds: 12,
-  successRatePct: 97.67,
-  chains: ["ethereum", "polygon"],
-  status: "active",
-};
-vi.mock("@/hooks/useSolver", () => ({ useSolver: useSolverMock }));
-
 const { useSolverMock, useSolversMock } = vi.hoisted(() => ({
   useSolverMock: vi.fn((address?: string | null) => {
     if (!address) return { solver: null, isLoading: false, error: undefined };

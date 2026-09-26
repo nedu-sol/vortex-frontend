@@ -8,7 +8,7 @@ JSON parsing. Each frame is expected to be a JSON object matched to the generic 
 
 **Connection behavior:**
 
-- Reconnect delay: 3 seconds
+- Reconnect delay: exponential backoff starting at 3 seconds, capped at 60 seconds, with ±20% jitter and a 10-attempt cap. Returning to a visible tab resets the attempt counter.
 - Malformed frames are silently ignored
 - Passing `null` as the URL tears down the socket and stays idle
 

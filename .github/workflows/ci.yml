@@ -38,9 +38,19 @@ jobs:
       - run: npm ci
       - run: npm run check:env
       - run: npm run check:i18n
+      - run: npm run check:orphan-tests
+      - run: npm run check:docs
+      - run: npm run check:dead-code
       - run: npm run lint
       - run: npm test
       - run: npm run test:coverage
+      - name: Coverage ratchet (max 0.5 point decrease)
+        run: |
+          if git show origin/main:coverage/coverage-summary.json > /tmp/base-coverage.json 2>/dev/null; then
+            node scripts/coverage-ratchet.mjs /tmp/base-coverage.json coverage/coverage-summary.json
+          else
+            echo "No base coverage artifact is committed; establishing the baseline."
+          fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: coverage-report
